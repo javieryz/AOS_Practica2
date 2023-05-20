@@ -1,4 +1,6 @@
-from fastapi import Depends, FastAPI, HTTPException, status, Query, Request
+import hashlib
+import json
+from fastapi import Depends, FastAPI, HTTPException, Response, status, Query, Request
 from schemas.database import SessionLocal, get_db
 import notificaciones_service as notificaciones_service
 
@@ -117,7 +119,7 @@ def notificaciones_masivas_options():
   return {"allow": allowed_methods}
 
 @app.get("/notificaciones/{idNotificacion}")
-async def obtener_notificacion(idNotificacion: int, db: SessionLocal = Depends(get_db)):
+async def obtener_notificacion(idNotificacion: int, response: Response, db: SessionLocal = Depends(get_db)):
   if not idNotificacion:
     error_response = {
       "type": "https://httpstatuses.com/400",
@@ -138,6 +140,10 @@ async def obtener_notificacion(idNotificacion: int, db: SessionLocal = Depends(g
       "instance": "about:blank"
     }
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=error_response)  
+  
+  notificacion_str = str(notificacion)
+  etag = hashlib.md5(notificacion_str.encode()).hexdigest()
+  response.headers["ETag"] = etag
   return notificacion
 
 @app.options("/notificaciones/{idNotificacion}")
@@ -146,7 +152,7 @@ def notificaciones_idNotificacion_options():
   return {"allow": allowed_methods}
 
 @app.get("/notificaciones/trabajo/{idTrabajo}")
-async def obtener_notificaciones_trabajo(idTrabajo: int, page: int = Query(default=1, gt=0), db: SessionLocal = Depends(get_db)):
+async def obtener_notificaciones_trabajo(response: Response, idTrabajo: int, page: int = Query(default=1, gt=0), db: SessionLocal = Depends(get_db)):
   if not idTrabajo:
     error_response = {
       "type": "https://httpstatuses.com/400",
@@ -169,6 +175,10 @@ async def obtener_notificaciones_trabajo(idTrabajo: int, page: int = Query(defau
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=error_response)  
   except Exception as e:
     raise e
+  
+  notificaciones_str = str(notificaciones)
+  etag = hashlib.md5(notificaciones_str.encode()).hexdigest()
+  response.headers["ETag"] = etag
   return notificaciones
 
 @app.options("/notificaciones/trabajo/{idTrabajo}")
@@ -177,7 +187,7 @@ def notificaciones_idTrabajo_options():
   return {"allow": allowed_methods}
 
 @app.get("/notificaciones/cliente/{idCliente}")
-async def obtener_notificaciones_cliente(idCliente: int, page: int = Query(default=1, gt=0), db: SessionLocal = Depends(get_db)):
+async def obtener_notificaciones_cliente(response: Response, idCliente: int, page: int = Query(default=1, gt=0), db: SessionLocal = Depends(get_db)):
   if not idCliente:
     error_response = {
       "type": "https://httpstatuses.com/400",
@@ -199,7 +209,11 @@ async def obtener_notificaciones_cliente(idCliente: int, page: int = Query(defau
       }
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=error_response)  
   except Exception as e:
-    raise e 
+    raise e
+  
+  notificaciones_str = str(notificaciones)
+  etag = hashlib.md5(notificaciones_str.encode()).hexdigest()
+  response.headers["ETag"] = etag
   return notificaciones
 
 @app.patch("/notificaciones/cliente/{idCliente}")
