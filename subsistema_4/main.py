@@ -188,8 +188,7 @@ async def obtener_notificaciones_cliente(idCliente: int, page: int = Query(defau
     }
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error_response)
   try:
-    offset = page * 5
-    notificaciones = notificaciones_service.get_notificaciones_by_idCliente(idCliente=idCliente, offset=offset, db=db)
+    notificaciones = notificaciones_service.get_notificaciones_by_idCliente(idCliente=idCliente, page=page, db=db)
     if not notificaciones:
       error_response = {
         "type": "https://httpstatuses.com/404",

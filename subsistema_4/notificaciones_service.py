@@ -30,6 +30,11 @@ def save_notificacion_masiva(datos_notificacion_masiva: dict, db: SessionLocal):
   return db_notificacion_masiva
 
 
+def get_notificacion(idNotificacion: int, db: SessionLocal):
+  notificacion = db.query(Notificacion).filter_by(idNotificacion=idNotificacion).first()
+  return notificacion
+
+
 def get_notificaciones_by_idTrabajo(idTrabajo: int, page: int, db: SessionLocal):
   page_size = 5
   offset = (page - 1) * page_size
