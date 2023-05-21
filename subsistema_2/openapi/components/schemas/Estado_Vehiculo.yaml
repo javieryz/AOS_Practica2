@@ -1,0 +1,10 @@
+title: Clasificación de los vehiculos
+type: string
+enum:
+  - Arreglado
+  - Reparando
+  - Peritaje
+  - recepcionado
+  - probando
+  - enRosaje
+x-faker: helpers.arrayElement()
