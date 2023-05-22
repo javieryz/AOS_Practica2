@@ -1,13 +1,15 @@
 from datetime import datetime
+from fastapi import HTTPException, status
 from schemas.database import SessionLocal
 from schemas.notificacion import Notificacion
 from schemas.notificacion_masiva import NotificacionMasiva
+from schemas.cliente import Cliente
 
 def save_notificacion(datos_notificacion: dict, db: SessionLocal):
-  """
-    Cambiar para que consiga estado e idCliente de otros subsistemas
-  """
   datos_notificacion['fechaEnvio'] = datetime.now()
+  """
+    En la implementación completa, estado e idCliente se obtendrían con una petición al microservicio de Clientes
+  """
   datos_notificacion['estado'] = "finalizado"
   datos_notificacion['idCliente'] = 1
 
@@ -47,3 +49,14 @@ def get_notificaciones_by_idCliente(idCliente: int, page: int, db: SessionLocal)
   offset = (page - 1) * page_size
   notificaciones = db.query(Notificacion).filter_by(idCliente=idCliente).limit(page_size).offset(offset).all()
   return notificaciones
+
+
+def change_suscripcion(idCliente: int, suscripcion: bool, db: SessionLocal):
+  cliente = db.query(Cliente).filter_by(idCliente=idCliente).first()
+  if cliente:
+    cliente.recibeNotificaciones = suscripcion
+    db.commit()
+    print(cliente.idCliente)
+    return cliente
+  else:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)

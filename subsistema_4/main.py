@@ -1,8 +1,8 @@
 import hashlib
-import json
 from fastapi import Depends, FastAPI, HTTPException, Response, status, Query, Request
 from schemas.database import SessionLocal, get_db
 import notificaciones_service as notificaciones_service
+from fastapi.encoders import jsonable_encoder
 
 app = FastAPI(
     title="Taller de Coches - Subsistema de Envío de Notificaciones",
@@ -217,11 +217,9 @@ async def obtener_notificaciones_cliente(response: Response, idCliente: int, pag
   return notificaciones
 
 @app.patch("/notificaciones/cliente/{idCliente}")
-async def actualizar_suscripcion_notificaciones(idCliente: int, suscripcion: bool):
-  """
-    Por completar
-  """
-  if not idCliente and not suscripcion: 
+async def actualizar_suscripcion_notificaciones(idCliente: int, request: Request, db: SessionLocal = Depends(get_db)):
+  datos_cliente = await request.json()
+  if idCliente is None or datos_cliente.get("suscripcion") is None: 
     error_response = {
       "type": "https://httpstatuses.com/400",
       "title": "UNPROCESSABLE ENTITY",
@@ -231,7 +229,7 @@ async def actualizar_suscripcion_notificaciones(idCliente: int, suscripcion: boo
     }
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error_response)
   try:
-    cliente = notificaciones_service.change_suscripcion(idCliente=idCliente, suscripcion=suscripcion)
+    cliente = notificaciones_service.change_suscripcion(idCliente=idCliente, suscripcion=datos_cliente["suscripcion"], db=db)
   except Exception as e:
     error_response = {
       "type": "https://httpstatuses.com/404",
@@ -240,8 +238,9 @@ async def actualizar_suscripcion_notificaciones(idCliente: int, suscripcion: boo
       "detail": "Resource not found",
       "instance": "about:blank"
     }
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=error_response) 
-  return cliente
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=error_response)
+  
+  return jsonable_encoder(cliente)
 
 @app.options("/notificaciones/cliente/{idNotificacion}")
 def notificaciones_idCliente_options():
