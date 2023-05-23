@@ -240,6 +240,13 @@ paths:
       description: Actualiza la suscripción a notificaciones de un cliente
       tags:
         - "Notificaciones 🔔"
+      parameters:
+        - name: idCliente
+          in: path
+          required: true
+          description: Identificador único del cliente
+          schema:
+            type: string
       requestBody:
         $ref: '#/components/requestBodies/SuscripcionNotificacionesRB'
       responses:
@@ -371,14 +378,10 @@ components:
           schema:
             type: object
             properties:
-              idCliente:
-                type: string
-                description: Id del cliente
               suscripcion:
                 type: boolean
                 description: indica si un usuario está suscrito a las notificaciones
           example:
-            idCliente: "1"
             suscripcion: false
   
   schemas:

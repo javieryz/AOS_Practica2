@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 username = 'root'
 password = 'aos2023'
-host = 'db_subsistema_4'
+host = 'db_database_4'
 port = '3306'
 database = 'aos2023'
 

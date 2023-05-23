@@ -2,7 +2,7 @@ version: '3'
 
 services:
   subsistema_4:
-    image: javieryz/subsistema_4:latest
+    image: javieryz/notificaciones:latest
     command: uvicorn main:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
@@ -10,11 +10,13 @@ services:
       - db_subsistema_4
   
   db_subsistema_4:
-    image: javieryz/db_subsistema_4:latest
+    image: javieryz/db:latest
     environment:
       - MYSQL_ROOT_PASSWORD=aos2023
     ports:
       - "3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
 
   frontend_subsistema_4:
     image: swaggerapi/swagger-ui:latest
@@ -25,3 +27,6 @@ services:
       SWAGGER_JSON: /aos/openapi.yaml
     volumes:
       - ./openapi:/aos:ro
+
+volumes:
+  mysql:
