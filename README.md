@@ -11,8 +11,10 @@ Requisitos previos:
   `\Practica-AOS`
 
 3. Ejecutar:
+  ```
   $ docker-compose build
   $ docker-compose up
+  ```
 
 4. Abrir: `http://localhost:x/` en un navegador, sustituyendo `x` por el puerto correspondiente mostrado en el `docker-compose.yaml` (del 8001 al 8007).
     
@@ -24,13 +26,19 @@ Requisitos previos:
   `\kubernetes`
 
 2. Ejecutar:
+  ```
   $ kubectl apply -f .
+  ```
 
 3. Esperar a que se creen los pods. Para comprobar el estado de los pods, ejecutar:
+  ```
   $ kubectl get pods
+  ```
 
 4. Comprobar la IP externa en la que están disponibles los servicios, ejecutando:
+  ```
   $ kubectl get services
+  ```
 La IP externa suele ser `localhost`.
 
 5. Abrir: `http://localhost:x/` (o la IP que sea) en un navegador, sustituyendo `x` por el puerto correspondiente mostrado en cada manifiesto (del 8001 al 8007).
@@ -39,8 +47,11 @@ La IP externa suele ser `localhost`.
 #### Kubernetes - la IP externa muestra el estado `<pending>`
 Debido a que para la implementacion de kubernetes se han usado LoadBalancers, es necesario que estén libres los puertos 8001 al 8007 y 4011 al 4017. Para asegurarse de esto:
 1. Ejecutar:
+  ```
   $ netstat -aon
-
+  ```
 2. Encontrar el PID del proceso que ocupa estos puertos y ejecutar:
+  ```
   $ taskkill /pid <pid> /F
+  ```
 Esto reiniciará Docker. Tras unos segundos, los servicios deberían ser accesibles.
