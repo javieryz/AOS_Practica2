@@ -1,0 +1,164 @@
+version: '3'
+
+services:
+  mock-backend-subsistema-1:
+    image: stoplight/prism:latest
+    container_name: aos2023_mock_subsistema_1
+    command: mock --cors -h 0.0.0.0 "/aos/openapi.yaml"
+    ports:
+      - "4011:4010"
+    volumes:
+      - ./subsistema_1/openapi:/aos:ro
+
+  frontend-subsistema-1:
+    image: swaggerapi/swagger-ui:latest
+    container_name: aos2023_ui_subsistema_1
+    ports:
+      - "8001:8080"
+    environment:
+      SWAGGER_JSON: /aos/openapi.yaml
+    volumes:
+      - ./subsistema_1/openapi:/aos:ro
+
+  mock-backend-subsistema-2:
+    image: stoplight/prism:latest
+    container_name: aos2023_mock_subsistema_2
+    command: mock --cors -h 0.0.0.0 "/aos/openapi.yaml"
+    ports:
+      - "4012:4010"
+    volumes:
+      - ./subsistema_2/openapi:/aos:ro
+
+  frontend-subsistema-2:
+    image: swaggerapi/swagger-ui:latest
+    container_name: aos2023_ui_subsistema_2
+    ports:
+      - "8002:8080"
+    environment:
+      SWAGGER_JSON: /aos/openapi.yaml
+    volumes:
+      - ./subsistema_2/openapi:/aos:ro
+
+  mock-backend-subsistema-3:
+    image: stoplight/prism:latest
+    container_name: aos2023_mock_subsistema_3
+    command: mock --cors -h 0.0.0.0 "/aos/openapi.yaml"
+    ports:
+      - "4013:4010"
+    volumes:
+      - ./subsistema_3/openapi:/aos:ro
+
+  frontend-subsistema-3:
+    image: swaggerapi/swagger-ui:latest
+    container_name: aos2023_ui_subsistema_3
+    ports:
+      - "8003:8080"
+    environment:
+      SWAGGER_JSON: /aos/openapi.yaml
+    volumes:
+      - ./subsistema_3/openapi:/aos:ro
+
+  subsistema-4:
+    image: javieryz/notificaciones:latest
+    container_name: aos2023_mock_subsistema_4
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "4014:8000"
+    depends_on:
+      - db-subsistema-4
+  
+  db-subsistema-4:
+    image: javieryz/db:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=aos2023
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+
+  frontend-subsistema-4:
+    image: swaggerapi/swagger-ui:latest
+    container_name: aos2023_ui_subsistema_4
+    ports:
+      - "8004:8080"
+    environment:
+      SWAGGER_JSON: /aos/openapi.yaml
+    volumes:
+      - ./subsistema_4/openapi:/aos:ro
+
+  mock-backend-subsistema-5:
+    image: stoplight/prism:latest
+    container_name: aos2023_mock_subsistema_5
+    command: mock --cors -h 0.0.0.0 "/aos/openapi.yaml"
+    ports:
+      - "4015:4010"
+    volumes:
+      - ./subsistema_5/openapi:/aos:ro
+
+  frontend-subsistema-5:
+    image: swaggerapi/swagger-ui:latest
+    container_name: aos2023_ui_subsistema_5
+    ports:
+      - "8005:8080"
+    environment:
+      SWAGGER_JSON: /aos/openapi.yaml
+    volumes:
+      - ./subsistema_5/openapi:/aos:ro
+
+  mock-backend-subsistema-6:
+    image: stoplight/prism:latest
+    container_name: aos2023_mock_subsistema_6
+    command: mock --cors -h 0.0.0.0 "/aos/openapi.yaml"
+    ports:
+      - "4016:4010"
+    volumes:
+      - ./subsistema_6/openapi:/aos:ro
+
+  frontend-subsistema-6:
+    image: swaggerapi/swagger-ui:latest
+    container_name: aos2023_ui_subsistema_6
+    ports:
+      - "8006:8080"
+    environment:
+      SWAGGER_JSON: /aos/openapi.yaml
+    volumes:
+      - ./subsistema_6/openapi:/aos:ro
+
+  mock-backend-subsistema-7:
+    image: stoplight/prism:latest
+    container_name: aos2023_mock_subsistema_7
+    command: mock --cors -h 0.0.0.0 "/aos/openapi.yaml"
+    ports:
+      - "4017:4010"
+    volumes:
+      - ./subsistema_7/openapi:/aos:ro
+
+  frontend-subsistema-7:
+    image: swaggerapi/swagger-ui:latest
+    container_name: aos2023_ui_subsistema_7
+    ports:
+      - "8007:8080"
+    environment:
+      SWAGGER_JSON: /aos/openapi.yaml
+    volumes:
+      - ./subsistema_7/openapi:/aos:ro
+
+  proxy:
+    image: caddy:latest
+    container_name: aos2023_proxy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy_data:/data
+    ports:
+      - "80:80"
+    depends_on:
+      - mock-backend-subsistema-1
+      - mock-backend-subsistema-2
+      - mock-backend-subsistema-3
+      - subsistema-4
+      - mock-backend-subsistema-5
+      - mock-backend-subsistema-6
+      - mock-backend-subsistema-7
+  
+volumes:
+  mysql:
