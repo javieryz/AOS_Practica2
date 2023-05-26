@@ -21,6 +21,11 @@ Requisitos previos:
 ### Parte 2: Kubernetes
 Requisitos previos:
 - Tener kubectl instalado.
+- Estar en el contexto local de `kubectl`. Para comprobarlo, ejecutar:
+  ```
+  $ kubectl config get-contexts
+  $ kubectl config use-context docker-desktop
+  ```
 
 1. Ir al directorio que contiene los manifiestos
   `\kubernetes`
