@@ -11,7 +11,7 @@
   basePath: /api/v1
   
   servers:
-    - url: http://127.0.0.1:4011
+    - url: http://mock-backend-subsistema-1:4011
       description: Servidor
   
   tags:

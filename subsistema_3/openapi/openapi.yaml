@@ -4,7 +4,7 @@ info:
   title: (AOS 2023) Entrega diario en taller
   description: API REST para la gestión de los trabajos que se realizan a diario en un taller.
 servers:
-- url: http://127.0.0.1:4013
+- url: http://mock-backend-subsistema-3:4013
 basePath: /api/v1
 tags:
   - name: Tipos de trabajo

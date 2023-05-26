@@ -1,5 +1,7 @@
-FROM stoplight/prism:latest
+FROM caddy:latest
 
-COPY subsistema_7/openapi /aos
+COPY Caddyfile /etc/caddy/Caddyfile
 
-EXPOSE 4010
+VOLUME /data
+
+EXPOSE 80

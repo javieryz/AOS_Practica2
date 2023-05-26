@@ -13,7 +13,7 @@ info:
     url: https://www.etsisi.upm.es/
 basePath: /api/v1
 servers:
-  - url: http://127.0.0.1:4012
+  - url: http://mock-backend-subsistema-2:4012
 tags:
   - name: Vehiculo
     description: Vehiculo

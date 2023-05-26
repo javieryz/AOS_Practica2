@@ -11,7 +11,7 @@ info:
     name: Grupo 8 AOS
     email: jorge.mpavon@alumnos.upm.es
 servers:
-  - url: http://127.0.0.1:4015
+  - url: http://mock-backend-subsistema-5:4015
 basePath: /api/v1
 tags:
   - name: 'Factura 📋'

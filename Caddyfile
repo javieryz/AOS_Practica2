@@ -1,12 +1,43 @@
-http://127.0.0.1
-
-#
-route /api/v1/* {
-        uri strip_prefix /api/v1
-        reverse_proxy aos2023_mock:4010
-}
-
-# Redirección a Swagger-UI (puerto 8000) de la "página principal" desde http://127.0.0.1:80/
 route / {
-        redir http://127.0.0.1:8000/
+    @redirect1 {
+        remote_ip *
+        remote_port 8001
+    }
+    redir @redirect1 http://mock-backend-subsistema-1
+
+    @redirect2 {
+        remote_ip *
+        remote_port 8002
+    }
+    redir @redirect2 http://mock-backend-subsistema-2
+
+    @redirect3 {
+        remote_ip *
+        remote_port 8003
+    }
+    redir @redirect3 http://mock-backend-subsistema-3
+
+    @redirect4 {
+        remote_ip *
+        remote_port 8004
+    }
+    redir @redirect4 http://subsistema-4
+
+    @redirect5 {
+        remote_ip *
+        remote_port 8005
+    }
+    redir @redirect5 http://mock-backend-subsistema-5
+
+    @redirect6 {
+        remote_ip *
+        remote_port 8006
+    }
+    redir @redirect6 http://mock-backend-subsistema-6
+
+    @redirect7 {
+      remote_ip *
+      remote_port 8007
+  }
+  redir @redirect7 http://mock-backend-subsistema-7
 }

@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   title: Taller de Coches - Subsistema de Envío de Notificaciones
 servers:
-  - url: http://127.0.0.1:4014
+  - url: http://subsistema-4:4014
 basePath: /api/v1
 paths:
   /notificaciones/correo:

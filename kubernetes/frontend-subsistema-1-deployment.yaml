@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert --out kubernetes
+    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
     kompose.version: 1.28.0 (c4137012e)
   creationTimestamp: null
   labels:
@@ -17,18 +17,18 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert --out kubernetes
+        kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
         kompose.version: 1.28.0 (c4137012e)
       creationTimestamp: null
       labels:
-        io.kompose.network/aos-practica2-default: "true"
+        io.kompose.network/kubernetes-default: "true"
         io.kompose.service: frontend-subsistema-1
     spec:
       containers:
         - env:
             - name: SWAGGER_JSON
               value: /aos/openapi.yaml
-          image: javieryz/frontend-subsistema-1
+          image: javieryz/frontend-subsistema-1-gcp
           name: aos2023-ui-subsistema-1
           ports:
             - containerPort: 8080

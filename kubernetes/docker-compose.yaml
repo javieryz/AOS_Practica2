@@ -9,7 +9,7 @@ services:
       - "4011:4010"
 
   frontend-subsistema-1:
-    image: javieryz/frontend-subsistema-1
+    image: javieryz/frontend-subsistema-1-gcp
     container_name: aos2023_ui_subsistema_1
     ports:
       - "8001:8080"
@@ -24,7 +24,7 @@ services:
       - "4012:4010"
 
   frontend-subsistema-2:
-    image: javieryz/frontend-subsistema-2
+    image: javieryz/frontend-subsistema-2-gcp
     container_name: aos2023Trabajos_ui
     ports:
       - "8002:8080"
@@ -39,7 +39,7 @@ services:
       - "4013:4010"
 
   frontend-subsistema-3:
-    image: javieryz/frontend-subsistema-3
+    image: javieryz/frontend-subsistema-3-gcp
     container_name: aos2023_ui_subsistema_3
     ports:
       - "8003:8080"
@@ -63,7 +63,7 @@ services:
       - "3306:3306"
 
   frontend-subsistema-4:
-    image: javieryz/frontend-subsistema-4
+    image: javieryz/frontend-subsistema-4-gcp
     container_name: aos2023_ui_subsistema_4
     ports:
       - "8004:8080"
@@ -78,7 +78,7 @@ services:
       - "4015:4010"
 
   frontend-subsistema-5:
-    image: javieryz/frontend-subsistema-5
+    image: javieryz/frontend-subsistema-5-gcp
     container_name: aos2023_ui_subsistema_5
     ports:
       - "8005:8080"
@@ -93,7 +93,7 @@ services:
       - "4016:4010"
 
   frontend-subsistema-6:
-    image: javieryz/frontend-subsistema-6
+    image: javieryz/frontend-subsistema-6-gcp
     container_name: aos2023_ui_subsistema_6
     ports:
       - "8006:8080"
@@ -108,9 +108,23 @@ services:
       - "4017:4010"
 
   frontend-subsistema-7:
-    image: javieryz/frontend-subsistema-7
+    image: javieryz/frontend-subsistema-7-gcp
     container_name: aos2023_ui_subsistema_7
     ports:
       - "8007:8080"
     environment:
       SWAGGER_JSON: /aos/openapi.yaml
+
+  caddy:
+    image: javieryz/caddy:latest
+    container_name: aos2023_caddy
+    ports:
+      - "80:80"
+    depends_on:
+      - mock-backend-subsistema-1
+      - mock-backend-subsistema-2
+      - mock-backend-subsistema-3
+      - subsistema-4
+      - mock-backend-subsistema-5
+      - mock-backend-subsistema-6
+      - mock-backend-subsistema-7
