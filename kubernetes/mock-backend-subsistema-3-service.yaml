@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert --out kubernetes
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mock-backend-subsistema-3
+  name: mock-backend-subsistema-3
+spec:
+  ports:
+    - name: "4013"
+      port: 4013
+      targetPort: 4010
+  type: LoadBalancer
+  selector:
+    io.kompose.service: mock-backend-subsistema-3
+status:
+  loadBalancer: {}

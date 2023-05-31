@@ -11,8 +11,9 @@ info:
   contact:
     name: Equipo 7
     url: https://www.etsisi.upm.es/
+basePath: /api/v1
 servers:
-  - url: http://127.0.0.1:80/api/v1
+  - url: http://127.0.0.1:4012
 tags:
   - name: Vehiculo
     description: Vehiculo

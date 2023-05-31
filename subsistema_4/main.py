@@ -4,10 +4,19 @@ from fastapi import Depends, FastAPI, HTTPException, Response, status, Query, Re
 from schemas.database import SessionLocal, get_db
 import notificaciones_service as notificaciones_service
 from fastapi.encoders import jsonable_encoder
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="Taller de Coches - Subsistema de Envío de Notificaciones",
     version="1.0.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8004"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.post("/notificaciones/correo")
@@ -65,8 +74,8 @@ async def enviar_notificacion_masiva(request: Request, db: SessionLocal = Depend
     notificacion_masiva = notificaciones_service.save_notificacion_masiva(datos_notificacion_masiva=datos_notificacion_masiva, db=db)
   except json.JSONDecodeError:
     raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=create_error_response(422, "Missing field"))
-  except Exception:
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=create_error_response(400, "Bad syntax"))
+  #except Exception:
+  #  raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=create_error_response(400, "Bad syntax"))
   
   return notificacion_masiva
 
